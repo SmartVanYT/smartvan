@@ -6,6 +6,8 @@
  */
 
 #include <SparkFun_TMP117.h>
+#include <TaskManagerIO.h>
+#include <ExecWithParameter.h>
 
 #define VIPER_LOCK D3
 #define VIPER_UNLOCK D4
@@ -14,28 +16,33 @@
 // The default address of the device is 0x48 = (GND)
 TMP117 temp_sensor; // Initalize sensor
 
-void pushButton(int pin, int duration)
+void buttonRelease(int pin)
+{
+  digitalWrite(pin, LOW);
+}
+
+void momentaryPush(int pin, int duration)
 {
   digitalWrite(pin, HIGH);
-  delay(duration);
-  digitalWrite(pin, LOW);
+  auto callback = new ExecWithParameter<int>(buttonRelease, pin);
+  taskManager.scheduleOnce(duration, callback, TIME_MILLIS, true);
 }
 
 int buttonCallback(String command)
 {
   if (command == "lock")
   {
-    pushButton(VIPER_LOCK, 200);
+    momentaryPush(VIPER_LOCK, 200);
     return 1;
   }
   else if (command == "unlock")
   {
-    pushButton(VIPER_UNLOCK, 200);
+    momentaryPush(VIPER_UNLOCK, 200);
     return 1;
   }
   else if (command == "engine")
   {
-    pushButton(VIPER_REMOTE_START, 1000);
+    momentaryPush(VIPER_REMOTE_START, 1000);
     return 1;
   }
   return -1;
@@ -67,17 +74,18 @@ void setup()
 
 void loop()
 {
-  // Data Ready is a flag for the conversion modes - in continous conversion the dataReady flag should always be high
-  // if (temp_sensor.dataReady() == true) // Function to make sure that there is data ready to be printed, only prints temperature values when data is ready
-  // {
-  //   float tempC = temp_sensor.readTempC();
-  //   float tempF = temp_sensor.readTempF();
-  //   // Print temperature in °C and °F
-  //   Serial.println(); // Create a white space for easier viewing
-  //   Serial.print("Temperature in Celsius: ");
-  //   Serial.println(tempC);
-  //   Serial.print("Temperature in Fahrenheit: ");
-  //   Serial.println(tempF);
-  //   delay(500); // Delay added for easier readings
-  // }
+  taskManager.runLoop();
+  //   // Data Ready is a flag for the conversion modes - in continous conversion the dataReady flag should always be high
+  //   // if (temp_sensor.dataReady() == true) // Function to make sure that there is data ready to be printed, only prints temperature values when data is ready
+  //   // {
+  //   //   float tempC = temp_sensor.readTempC();
+  //   //   float tempF = temp_sensor.readTempF();
+  //   //   // Print temperature in °C and °F
+  //   //   Serial.println(); // Create a white space for easier viewing
+  //   //   Serial.print("Temperature in Celsius: ");
+  //   //   Serial.println(tempC);
+  //   //   Serial.print("Temperature in Fahrenheit: ");
+  //   //   Serial.println(tempF);
+  //   //   delay(500); // Delay added for easier readings
+  //   // }
 }
