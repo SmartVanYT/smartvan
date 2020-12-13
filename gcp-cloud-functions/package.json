@@ -1,0 +1,13 @@
+{
+  "name": "smartvan-sensor-log-reader",
+  "version": "0.0.1",
+  "dependencies": {
+    "@google-cloud/pubsub": "^0.18.0",
+    "@google-cloud/bigquery": "^0.9.6"
+  },
+  "config": {
+    "project_id": "REPLACE_ME",
+    "dataset_id": "REPLACE_ME",
+    "table_id": "REPLACE_ME"
+  }
+}

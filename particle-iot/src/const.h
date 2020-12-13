@@ -1,0 +1,8 @@
+#pragma once
+
+#define DATA_PUBLISH_PERIOD_SECS 60
+#define RESYNC_PARTICLE_NTP_SECS 24 * 60 * 60
+
+#define VIPER_LOCK D3
+#define VIPER_UNLOCK D4
+#define VIPER_REMOTE_START D5
