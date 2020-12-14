@@ -73,6 +73,7 @@ exports.main = function (event, context) {
       .table(tableId)
       .insert(rows)
       .then((resp) => {
+        console.log("Did insert rows with response:", resp);
         if (resp && resp.errors) {
           resp.errors.forEach((err) => printQueryErrorDetails(err));
         }

@@ -11,9 +11,11 @@
 #include "const.h"
 #include "viper.h"
 #include "sensors.h"
+#include "ntp_sync.h"
 
 ViperModule viper;
 SensorModule sensors;
+NetworkTimeSyncModule ntp;
 
 void setup()
 {
@@ -26,10 +28,8 @@ void setup()
 
   viper.setup();
   sensors.setup();
+  ntp.setup();
 
-  taskManager.scheduleFixedRate(
-      RESYNC_PARTICLE_NTP_SECS, [] { Particle.syncTime(); },
-      TIME_SECONDS);
   taskManager.scheduleFixedRate(
       15, [] { Serial.println("Keepalive"); },
       TIME_SECONDS);

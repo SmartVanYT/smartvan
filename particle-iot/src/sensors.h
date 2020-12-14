@@ -1,6 +1,4 @@
 #pragma once
-#ifndef SENSORS_H
-#define SENSORS_H
 
 #include "const.h"
 #include <TaskManagerIO.h>
@@ -23,5 +21,3 @@ public:
 private:
   float readTemperatureF();
 };
-
-#endif
