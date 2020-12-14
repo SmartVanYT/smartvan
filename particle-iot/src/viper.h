@@ -38,6 +38,8 @@ private:
 
   int buttonCallback(String command)
   {
+    SVLED.signalCommandReceived();
+
     if (command == "lock")
     {
       momentaryPush(VIPER_LOCK, 200);

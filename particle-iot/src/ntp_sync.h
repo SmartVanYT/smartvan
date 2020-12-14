@@ -2,8 +2,6 @@
 
 #include "const.h"
 #include <TaskManagerIO.h>
-#include <ExecWithParameter.h>
-#include <SparkFun_TMP117.h>
 
 class NetworkTimeSyncModule : public Executable
 {

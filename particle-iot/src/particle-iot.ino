@@ -9,6 +9,7 @@
 #include <TaskManagerIO.h>
 #include <ExecWithParameter.h>
 #include "const.h"
+#include "led.h"
 #include "viper.h"
 #include "sensors.h"
 #include "ntp_sync.h"
@@ -30,9 +31,7 @@ void setup()
   sensors.setup();
   ntp.setup();
 
-  taskManager.scheduleFixedRate(
-      15, [] { Serial.println("Keepalive"); },
-      TIME_SECONDS);
+  SVLED.signalSetupComplete();
 }
 
 void loop()
