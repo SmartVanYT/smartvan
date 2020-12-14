@@ -4,13 +4,13 @@
 SVLEDHardware instance;
 LEDStatus blinkWhite(RGB_COLOR_WHITE, LED_PATTERN_BLINK, LED_SPEED_FAST, LEDPriority::LED_PRIORITY_CRITICAL);
 
-static void off()
+static void takeControl()
 {
   RGB.control(true);
   RGB.brightness(0);
 }
 
-static void on()
+static void releaseControl()
 {
   RGB.brightness(128);
   RGB.control(false);
@@ -19,15 +19,22 @@ static void on()
 void SVLEDHardware::signalSetupComplete()
 {
   taskManager.scheduleOnce(
-      5, [] { off(); }, TIME_SECONDS);
+      5, [] { takeControl(); }, TIME_SECONDS);
 }
 
 void SVLEDHardware::signalCommandReceived()
 {
-  on();
+  releaseControl();
   blinkWhite.setActive(true);
   taskManager.scheduleOnce(
-      2, [] { off(); }, TIME_SECONDS);
+      2, [] { takeControl(); }, TIME_SECONDS);
+}
+
+void SVLEDHardware::signalThermostatOn()
+{
+  takeControl();
+  RGB.brightness(64);
+  RGB.color(RGB_COLOR_RED);
 }
 
 SVLEDHardware &SVLEDHardware::get()

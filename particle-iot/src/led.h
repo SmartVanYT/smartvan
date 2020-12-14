@@ -8,6 +8,10 @@ using namespace particle;
 
 class SVLEDHardware
 {
+private:
+  int backgroundBrightness;
+  int backgroundColor;
+
 public:
   SVLEDHardware()
   {
@@ -16,6 +20,7 @@ public:
   static SVLEDHardware &get();
   void signalSetupComplete();
   void signalCommandReceived();
+  void signalThermostatOn();
 };
 
 #define SVLED SVLEDHardware::get()

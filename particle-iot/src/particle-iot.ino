@@ -13,10 +13,12 @@
 #include "viper.h"
 #include "sensors.h"
 #include "ntp_sync.h"
+#include "thermostat.h"
 
 ViperModule viper;
 SensorModule sensors;
 NetworkTimeSyncModule ntp;
+ThermostatModule thermostat(sensors, viper);
 
 void setup()
 {
@@ -30,6 +32,7 @@ void setup()
   viper.setup();
   sensors.setup();
   ntp.setup();
+  thermostat.setup();
 
   SVLED.signalSetupComplete();
 }

@@ -23,6 +23,20 @@ public:
     Particle.function("button", &ViperModule::buttonCallback, this);
   }
 
+  // Actions
+  void triggerLock()
+  {
+    momentaryPush(VIPER_LOCK, 200);
+  }
+  void triggerUnlock()
+  {
+    momentaryPush(VIPER_UNLOCK, 200);
+  }
+  void triggerEngine()
+  {
+    momentaryPush(VIPER_REMOTE_START, 1000);
+  }
+
 private:
   static void buttonRelease(int pin)
   {
@@ -42,17 +56,17 @@ private:
 
     if (command == "lock")
     {
-      momentaryPush(VIPER_LOCK, 200);
+      triggerLock();
       return 1;
     }
     else if (command == "unlock")
     {
-      momentaryPush(VIPER_UNLOCK, 200);
+      triggerUnlock();
       return 1;
     }
     else if (command == "engine")
     {
-      momentaryPush(VIPER_REMOTE_START, 1000);
+      triggerEngine();
       return 1;
     }
     return -1;
