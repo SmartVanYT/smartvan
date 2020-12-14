@@ -20,7 +20,7 @@ EngineSensor engine;
 ViperModule viper(engine);
 SensorModule sensors(engine);
 NetworkTimeSyncModule ntp;
-ThermostatModule thermostat(sensors, viper);
+ThermostatModule thermostat(sensors, viper, engine);
 
 void setup()
 {

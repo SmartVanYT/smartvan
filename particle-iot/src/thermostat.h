@@ -8,18 +8,20 @@
 #include "Sensors.h"
 #include "led.h"
 #include "viper.h"
+#include "engine.h"
 
 class ThermostatModule : Executable
 {
 private:
   SensorModule &sensorModule;
   ViperModule &viperModule;
+  EngineSensor &engine;
   bool isEnabled = false;
   bool isCooling = false;
   float targetTemp = NAN;
 
 public:
-  ThermostatModule(SensorModule sensors, ViperModule viper) : sensorModule(sensors), viperModule(viper)
+  ThermostatModule(SensorModule &sensors, ViperModule &viper, EngineSensor &engine) : sensorModule(sensors), viperModule(viper), engine(engine)
   {
   }
 
@@ -28,4 +30,5 @@ public:
 
 private:
   int commandCallback(String command);
+  bool shouldTriggerRemoteStart();
 };

@@ -30,10 +30,15 @@ bool targetTempIsValid(float temp)
 void ThermostatModule::setup()
 {
   Particle.function("thermostat", &ThermostatModule::commandCallback, this);
+  taskManager.scheduleFixedRate(30, this, TIME_SECONDS);
 }
 
 void ThermostatModule::exec()
 {
+  if (shouldTriggerRemoteStart())
+  {
+    viperModule.triggerEngine();
+  }
 }
 
 int ThermostatModule::commandCallback(String command)
@@ -73,4 +78,34 @@ int ThermostatModule::commandCallback(String command)
   }
 
   return -1;
+}
+
+bool ThermostatModule::shouldTriggerRemoteStart()
+{
+  if (!isEnabled)
+  {
+    return false;
+  }
+
+  auto last_reading = sensorModule.getLastReading();
+  if (isCooling && last_reading <= targetTemp)
+  {
+    // Already cool enough
+    return false;
+  }
+  else if (last_reading >= targetTemp)
+  {
+    // Already warm enough
+    return false;
+  }
+
+  if (!engine.isEligibleForAutomatedRemoteStart())
+  {
+    // Already started
+    return false;
+  }
+
+  Serial.println(String::format("Eligible for remote start to keep temperature of %f closer to %f", last_reading, targetTemp));
+
+  return true;
 }
