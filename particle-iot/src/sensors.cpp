@@ -4,10 +4,10 @@
 TMP117 temp_sensor; // Initalize sensor
 
 // payload version, timestamp, temp
-String buildPayload(float tempF)
+String buildPayload(float temp_f)
 {
   String ts = String::format("%d", Time.now());
-  return "0," + ts + "," + String::format("%.1f", tempF);
+  return "0," + ts + "," + String::format("%.1f", temp_f);
 }
 
 void SensorModule::setup()
@@ -16,7 +16,7 @@ void SensorModule::setup()
   if (!temp_sensor.begin())
   {
     Serial.println("TMP117 failed to setup");
-    tmp117_setup_succeeded = false;
+    tmp117SetupSucceeded = false;
   }
 
   taskManager.scheduleFixedRate(DATA_PUBLISH_PERIOD_SECS, this, TIME_SECONDS);
@@ -24,15 +24,15 @@ void SensorModule::setup()
 
 void SensorModule::exec()
 {
-  float tempF = readTemperatureF();
-  auto payload = buildPayload(tempF);
+  lastReading = readTemperatureF();
+  auto payload = buildPayload(lastReading);
   Serial.println("Publish new data payload " + payload);
   Particle.publish("gcp", payload, PRIVATE);
 }
 
 float SensorModule::readTemperatureF()
 {
-  if (!tmp117_setup_succeeded)
+  if (!tmp117SetupSucceeded)
   {
     return NAN;
   }
@@ -43,4 +43,9 @@ float SensorModule::readTemperatureF()
   }
 
   return temp_sensor.readTempF();
+}
+
+float SensorModule::getLastReading()
+{
+  return lastReading;
 }

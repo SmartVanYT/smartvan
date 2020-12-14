@@ -8,7 +8,8 @@
 class SensorModule : public Executable
 {
 private:
-  bool tmp117_setup_succeeded = true;
+  bool tmp117SetupSucceeded = true;
+  float lastReading = NAN;
 
 public:
   SensorModule()
@@ -17,6 +18,7 @@ public:
 
   void setup();
   void exec() override;
+  float getLastReading();
 
 private:
   float readTemperatureF();

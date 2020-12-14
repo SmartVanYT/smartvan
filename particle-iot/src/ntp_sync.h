@@ -6,7 +6,7 @@
 class NetworkTimeSyncModule : public Executable
 {
 private:
-  int hours_since_sync = 0;
+  int hoursSinceSync = 0;
 
 public:
   NetworkTimeSyncModule()
@@ -22,10 +22,10 @@ public:
 
   void exec() override
   {
-    hours_since_sync++;
-    if (hours_since_sync >= NETWORK_TIME_SYNC_HOURS)
+    hoursSinceSync++;
+    if (hoursSinceSync >= NETWORK_TIME_SYNC_HOURS)
     {
-      hours_since_sync = 0;
+      hoursSinceSync = 0;
       Serial.println("Initiating network time sync");
       Particle.syncTime();
     }
