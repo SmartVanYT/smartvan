@@ -18,7 +18,7 @@
 
 EngineSensor engine;
 ViperModule viper(engine);
-SensorModule sensors;
+SensorModule sensors(engine);
 NetworkTimeSyncModule ntp;
 ThermostatModule thermostat(sensors, viper);
 

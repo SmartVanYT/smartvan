@@ -24,7 +24,7 @@ function decodeEvent(event) {
   // Cloud pubsub puts this in as base64
   const iotData = Buffer.from(event.data, 'base64').toString();
   const parts = iotData.split(",");
-  if (parts.length != 3) {
+  if (parts.length != 4) {
     console.error("Payload malformed:", payload);
     throw 'malformed payload';
   }
@@ -32,6 +32,7 @@ function decodeEvent(event) {
   const version = parseInt(parts[0]);
   const device_ts = parseInt(parts[1]);
   const tempF = parseFloat(parts[2]);
+  const engine_state = parseInt(parts[3]);
 
   if (version != 0) {
     console.error("Version mismatch:", version);
@@ -44,6 +45,7 @@ function decodeEvent(event) {
     server_ts: receive_ts,
     payload_version: version,
     temperature_f: tempF,
+    engine_state: engine_state,
   };
 }
 

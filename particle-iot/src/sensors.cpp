@@ -3,11 +3,11 @@
 // The default address of the device is 0x48 = (GND)
 TMP117 temp_sensor; // Initalize sensor
 
-// payload version, timestamp, temp
-String buildPayload(float temp_f)
+// payload version, timestamp, temp, is_engine_on
+String buildPayload(float temp_f, bool is_engine_on)
 {
   String ts = String::format("%d", Time.now());
-  return "0," + ts + "," + String::format("%.1f", temp_f);
+  return "0," + ts + "," + String::format("%.1f", temp_f) + "," + (is_engine_on ? "1" : "0");
 }
 
 void SensorModule::setup()
@@ -25,7 +25,7 @@ void SensorModule::setup()
 void SensorModule::exec()
 {
   lastReading = readTemperatureF();
-  auto payload = buildPayload(lastReading);
+  auto payload = buildPayload(lastReading, engine.isEngineOn());
   Serial.println("Publish new data payload " + payload);
   Particle.publish("gcp", payload, PRIVATE);
 }
