@@ -25,7 +25,7 @@ function decodeEvent(event) {
   const iotData = Buffer.from(event.data, 'base64').toString();
   const parts = iotData.split(",");
   if (parts.length != 4) {
-    console.error("Payload malformed:", payload);
+    console.error("Payload malformed:", new Error('malformed payload: ' + payload));
     throw 'malformed payload';
   }
 
@@ -35,7 +35,7 @@ function decodeEvent(event) {
   const engine_state = parseInt(parts[3]);
 
   if (version != 0) {
-    console.error("Version mismatch:", version);
+    console.error("Version mismatch:", new Error('version mismatch: ' + version));
     throw 'version mismatch';
   }
 
@@ -57,34 +57,39 @@ function printQueryErrorDetails(err) {
   console.error('Query Error:', JSON.stringify(err));
 }
 
-exports.main = function (event, context) {
+exports.main = function (event, callback) {
+  var decodedData = {};
   try {
-    const decodedData = decodeEvent(event);
+    decodedData = decodeEvent(event);
+  } catch (e) {
+    console.error("Error decoding, skipping:", e);
+    callback(); // this is likely a programmer error and should not be retried
+    return;
+  }
 
-    // Instantiates a client
-    const bigquery = BigQuery({
-      projectId: projectId
-    });
+  const row = {
+    insertId: decodedData.device_ts + decodedData.server_ts,
+    json: decodedData,
+  };
+  const options = { raw: true };
+  console.log('Will insert', row);
 
-    // Inserts data into a table
-    const rows = [decodedData];
-    rows.forEach((row) => console.log('Will insert: ', row));
-
-    bigquery
+  try {
+    BigQuery({ projectId: projectId })
       .dataset(datasetId)
       .table(tableId)
-      .insert(rows)
+      .insert(row, options,)
       .then((resp) => {
         console.log("Did insert rows with response:", resp);
-        if (resp && resp.errors) {
-          resp.errors.forEach((err) => printQueryErrorDetails(err));
-        }
+        callback();
       }).catch((e) => {
         console.error("BigQuery threw error:", e);
         printQueryErrorDetails(e);
+        callback(e);
       });
   } catch (e) {
-    console.error("Exception:", e);
-    console.log("Event:", event, "Context:", context);
+    console.error("Forwarding Exception:", e);
+    console.log("Event:", event);
+    callback(e);
   }
 };
