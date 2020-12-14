@@ -41,6 +41,7 @@ int ThermostatModule::commandCallback(String command)
   if (command == "off")
   {
     isEnabled = false;
+    SVLED.signalThermostatOff();
     SVLED.signalCommandReceived();
     return 1;
   }

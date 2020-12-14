@@ -1,25 +1,38 @@
 #include "led.h"
 #include <TaskManagerIO.h>
 
+class SVLEDHardware;
+
 SVLEDHardware instance;
 LEDStatus blinkWhite(RGB_COLOR_WHITE, LED_PATTERN_BLINK, LED_SPEED_FAST, LEDPriority::LED_PRIORITY_CRITICAL);
 
-static void takeControl()
+// We need these static functions to workaround taskManager.scheduleOnce
+static void staticTakeControl()
 {
-  RGB.control(true);
-  RGB.brightness(0);
+  instance.takeControl();
 }
 
-static void releaseControl()
+// static void staticReleaseControl()
+// {
+//   instance.releaseControl();
+// }
+
+void SVLEDHardware::takeControl()
 {
-  RGB.brightness(128);
+  RGB.control(true);
+  RGB.brightness(backgroundBrightness);
+  RGB.color(backgroundColor);
+}
+
+void SVLEDHardware::releaseControl()
+{
   RGB.control(false);
 }
 
 void SVLEDHardware::signalSetupComplete()
 {
   taskManager.scheduleOnce(
-      5, [] { takeControl(); }, TIME_SECONDS);
+      5, staticTakeControl, TIME_SECONDS);
 }
 
 void SVLEDHardware::signalCommandReceived()
@@ -27,14 +40,20 @@ void SVLEDHardware::signalCommandReceived()
   releaseControl();
   blinkWhite.setActive(true);
   taskManager.scheduleOnce(
-      2, [] { takeControl(); }, TIME_SECONDS);
+      2, staticTakeControl, TIME_SECONDS);
 }
 
 void SVLEDHardware::signalThermostatOn()
 {
+  backgroundColor = RGB_COLOR_RED;
+  backgroundBrightness = 1;
   takeControl();
-  RGB.brightness(64);
-  RGB.color(RGB_COLOR_RED);
+}
+
+void SVLEDHardware::signalThermostatOff()
+{
+  backgroundBrightness = 0;
+  takeControl();
 }
 
 SVLEDHardware &SVLEDHardware::get()

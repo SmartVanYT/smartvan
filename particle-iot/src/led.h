@@ -21,6 +21,11 @@ public:
   void signalSetupComplete();
   void signalCommandReceived();
   void signalThermostatOn();
+  void signalThermostatOff();
+
+public:
+  void takeControl();
+  void releaseControl();
 };
 
 #define SVLED SVLEDHardware::get()
