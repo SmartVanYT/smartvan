@@ -3,11 +3,15 @@
 #include "const.h"
 #include <TaskManagerIO.h>
 #include <ExecWithParameter.h>
+#include "engine.h"
 
 class ViperModule
 {
+private:
+  EngineSensor &engine;
+
 public:
-  ViperModule()
+  ViperModule(EngineSensor &engine) : engine(engine)
   {
   }
 
@@ -28,13 +32,16 @@ public:
   {
     momentaryPush(VIPER_LOCK, 200);
   }
+
   void triggerUnlock()
   {
     momentaryPush(VIPER_UNLOCK, 200);
   }
+
   void triggerEngine()
   {
     momentaryPush(VIPER_REMOTE_START, 1000);
+    engine.remoteStartTriggered();
   }
 
 private:

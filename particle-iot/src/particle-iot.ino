@@ -14,8 +14,10 @@
 #include "sensors.h"
 #include "ntp_sync.h"
 #include "thermostat.h"
+#include "engine.h"
 
-ViperModule viper;
+EngineSensor engine;
+ViperModule viper(engine);
 SensorModule sensors;
 NetworkTimeSyncModule ntp;
 ThermostatModule thermostat(sensors, viper);
