@@ -57,7 +57,7 @@ function printQueryErrorDetails(err) {
   console.error('Query Error:', JSON.stringify(err));
 }
 
-exports.main = function (event, callback) {
+exports.main = function (event, _context, callback) {
   var decodedData = {};
   try {
     decodedData = decodeEvent(event);
