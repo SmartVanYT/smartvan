@@ -16,6 +16,8 @@
 #include "thermostat.h"
 #include "engine.h"
 
+SerialLogHandler logHandler;
+
 EngineSensor engine;
 ViperModule viper(engine);
 SensorModule sensors(engine);
@@ -29,7 +31,7 @@ void setup()
   Wire.begin();
   Wire.setClock(400000); // Set clock speed to be the fastest for better communication (fast mode)
 
-  Serial.println("Starting SmartVan");
+  Log.info("Starting SmartVan");
 
   viper.setup();
   sensors.setup();

@@ -15,7 +15,7 @@ void SensorModule::setup()
   // Function to check if the sensor will correctly self-identify with the proper Device ID/Address
   if (!temp_sensor.begin())
   {
-    Serial.println("TMP117 failed to setup");
+    Log.error("TMP117 failed to setup");
     tmp117SetupSucceeded = false;
   }
 
@@ -26,7 +26,7 @@ void SensorModule::exec()
 {
   lastReading = readTemperatureF();
   auto payload = buildPayload(lastReading, engine.isEngineOn());
-  Serial.println("Publish new data payload " + payload);
+  Log.trace("Publish new data payload " + payload);
   Particle.publish("gcp", payload, PRIVATE);
 }
 

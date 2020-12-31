@@ -26,12 +26,12 @@ public:
     if (hoursSinceSync >= NETWORK_TIME_SYNC_HOURS)
     {
       hoursSinceSync = 0;
-      Serial.println("Initiating network time sync");
+      Log.trace("Initiating network time sync");
       Particle.syncTime();
     }
     else
     {
-      Serial.println("An hour has passed but not ready to network sync yet");
+      Log.trace("An hour has passed but not ready to network sync yet");
     }
   }
 };

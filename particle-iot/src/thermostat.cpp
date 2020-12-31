@@ -56,7 +56,7 @@ int ThermostatModule::commandCallback(String command)
     // e.g. on:heat:68
     if (command.length() < 9)
     {
-      Serial.println("Invalid command" + command);
+      Log.warn("Invalid command" + command);
       return -1;
     }
     targetTemp = parseTargetTemp(command);
@@ -65,14 +65,14 @@ int ThermostatModule::commandCallback(String command)
     if (targetTempIsValid(targetTemp))
     {
       auto hot_or_cold = isCooling ? "cooling" : "heating";
-      Serial.println(String::format("Thermostat temp set for %s at %f", hot_or_cold, targetTemp));
+      Log.info(String::format("Thermostat temp set for %s at %f", hot_or_cold, targetTemp));
       isEnabled = true;
       SVLED.signalThermostatOn();
       return 1;
     }
     else
     {
-      Serial.println(String::format("Target temp was not valid: %f", targetTemp));
+      Log.warn(String::format("Target temp was not valid: %f", targetTemp));
       return -2;
     }
   }
@@ -105,7 +105,7 @@ bool ThermostatModule::shouldTriggerRemoteStart()
     return false;
   }
 
-  Serial.println(String::format("Eligible for remote start to keep temperature of %f closer to %f", last_reading, targetTemp));
+  Log.trace(String::format("Eligible for remote start to keep temperature of %f closer to %f", last_reading, targetTemp));
 
   return true;
 }

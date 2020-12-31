@@ -21,7 +21,7 @@ public:
   // Call me when remote start is triggered
   void remoteStartTriggered()
   {
-    Serial.println("Remote start triggered");
+    Log.trace("Remote start triggered");
 
     if (engineOn)
     {
@@ -32,7 +32,7 @@ public:
         pendingTaskId = 0;
       }
 
-      Serial.println("Engine was on so we turned it off");
+      Log.trace("Engine was on so we turned it off");
     }
     else
     {
@@ -41,7 +41,7 @@ public:
 
       pendingTaskId = taskManager.scheduleFixedRate(VIPER_REMOTE_START_DURATION_SECS, this, TIME_SECONDS);
 
-      Serial.println("Engine was off so we turned it on");
+      Log.trace("Engine was off so we turned it on");
     }
   }
 
@@ -54,22 +54,22 @@ public:
   {
     if (isEngineOn())
     {
-      Serial.println("Not eligible because engine is on");
+      Log.trace("Not eligible because engine is on");
       return false;
     }
 
     if (remoteStarts > VIPER_REMOTE_START_MAX_STARTS_PER_SESSION)
     {
-      Serial.println("Not eligible due to remote starts");
-      Serial.println(String::format("%d", remoteStarts));
+      Log.trace("Not eligible due to remote starts");
+      Log.trace(String::format("%d", remoteStarts));
       return false;
     }
 
     // This supposedly prevents overflow after 50 days of uptime
     if ((remoteStartEndTime > 0) && (unsigned long)(millis() - remoteStartEndTime) < (VIPER_REMOTE_START_DELAY_UNTIL_NEXT_SECS * 1000))
     {
-      Serial.println("Not eligible due to time");
-      Serial.println(String::format("%lu vs %lu", millis() - remoteStartEndTime, VIPER_REMOTE_START_DELAY_UNTIL_NEXT_SECS * 1000));
+      Log.trace("Not eligible due to time");
+      Log.trace(String::format("%lu vs %lu", millis() - remoteStartEndTime, VIPER_REMOTE_START_DELAY_UNTIL_NEXT_SECS * 1000));
       return false;
     }
 
@@ -80,12 +80,12 @@ public:
   {
     if (engineOn)
     {
-      Serial.println("Engine should be turning off around now due to timeout");
+      Log.trace("Engine should be turning off around now due to timeout");
       remoteStartOff();
     }
     else
     {
-      Serial.println("ERR Engine have been on!");
+      Log.trace("ERR Engine have been on!");
     }
   }
 
