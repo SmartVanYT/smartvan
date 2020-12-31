@@ -5,7 +5,7 @@
 #include <SparkFun_TMP117.h>
 
 #include "const.h"
-#include "Sensors.h"
+#include "sensors.h"
 #include "led.h"
 #include "viper.h"
 #include "engine.h"
