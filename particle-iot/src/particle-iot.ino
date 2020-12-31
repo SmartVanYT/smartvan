@@ -8,6 +8,7 @@
 #include <SparkFun_TMP117.h>
 #include <TaskManagerIO.h>
 #include <ExecWithParameter.h>
+#include <papertrail.h>
 #include "const.h"
 #include "led.h"
 #include "viper.h"
@@ -16,7 +17,17 @@
 #include "thermostat.h"
 #include "engine.h"
 
-SerialLogHandler logHandler;
+// SerialLogHandler logHandler;
+PapertrailLogHandler papertailHandler(
+    PAPERTRAIL_HOST, PAPERTRAIL_PORT, PAPERTRAIL_APP, System.deviceID(),
+    LOG_LEVEL_WARN, // By default particle has noisy logs from comm
+    {
+        {"app", LOG_LEVEL_TRACE}, // We want our logs
+    });
+
+#if PLATFORM_ID == 10
+#warning "Papertrail logging on the Electron can consume a lot of data and may result in a higher bill."
+#endif
 
 EngineSensor engine;
 ViperModule viper(engine);
