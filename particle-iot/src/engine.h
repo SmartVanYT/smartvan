@@ -39,7 +39,7 @@ public:
       engineOn = true;
       remoteStarts++;
 
-      pendingTaskId = taskManager.scheduleFixedRate(VIPER_REMOTE_START_DURATION_SECS, this, TIME_SECONDS);
+      pendingTaskId = taskManager.scheduleOnce(VIPER_REMOTE_START_DURATION_SECS, this, TIME_SECONDS);
 
       Log.trace("Engine was off so we turned it on");
     }
@@ -85,7 +85,7 @@ public:
     }
     else
     {
-      Log.trace("ERR Engine have been on!");
+      Log.trace("ERR Engine should have been on!");
     }
   }
 

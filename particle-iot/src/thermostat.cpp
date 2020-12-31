@@ -48,6 +48,7 @@ int ThermostatModule::commandCallback(String command)
     isEnabled = false;
     SVLED.signalThermostatOff();
     SVLED.signalCommandReceived();
+    Log.info("Thermostat disabled by remote command");
     return 1;
   }
   else if (command.startsWith("on"))
