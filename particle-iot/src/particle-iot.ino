@@ -14,6 +14,7 @@
 #include "viper.h"
 #include "sensors/thermometer.h"
 #include "sensors/engine.h"
+#include "sensors/voltmeter.h"
 #include "data_publisher.h"
 #include "ntp_sync.h"
 #include "thermostat.h"
@@ -32,10 +33,11 @@ PapertrailLogHandler papertailHandler(
 
 EngineSensor engine;
 Thermometer thermometer;
+Voltmeter voltmeter;
 ViperModule viper(engine);
 NetworkTimeSyncModule ntp;
 ThermostatModule thermostat(thermometer, viper, engine);
-DataPublisher data_publisher(engine, thermometer);
+DataPublisher data_publisher(engine, thermometer, voltmeter);
 
 void setup()
 {
@@ -47,6 +49,7 @@ void setup()
   Log.info("Starting SmartVan");
 
   thermometer.setup();
+  voltmeter.setup();
   viper.setup();
   data_publisher.setup();
   ntp.setup();
