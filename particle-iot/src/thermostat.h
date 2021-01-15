@@ -5,15 +5,15 @@
 #include <SparkFun_TMP117.h>
 
 #include "const.h"
-#include "sensors.h"
 #include "led.h"
 #include "viper.h"
-#include "engine.h"
+#include "sensors/thermometer.h"
+#include "sensors/engine.h"
 
 class ThermostatModule : Executable
 {
 private:
-  SensorModule &sensorModule;
+  Thermometer &thermometer;
   ViperModule &viperModule;
   EngineSensor &engine;
   bool isEnabled = false;
@@ -21,7 +21,7 @@ private:
   float targetTemp = NAN;
 
 public:
-  ThermostatModule(SensorModule &sensors, ViperModule &viper, EngineSensor &engine) : sensorModule(sensors), viperModule(viper), engine(engine)
+  ThermostatModule(Thermometer &thermometer, ViperModule &viper, EngineSensor &engine) : thermometer(thermometer), viperModule(viper), engine(engine)
   {
   }
 

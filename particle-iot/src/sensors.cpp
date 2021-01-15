@@ -3,6 +3,7 @@
 // The default address of the device is 0x48 = (GND)
 TMP117 temp_sensor; // Initalize sensor
 
+// Comma separated values
 // payload version, timestamp, temp, is_engine_on
 String buildPayload(float temp_f, bool is_engine_on)
 {

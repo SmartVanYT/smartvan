@@ -88,7 +88,7 @@ bool ThermostatModule::shouldTriggerRemoteStart()
     return false;
   }
 
-  auto last_reading = sensorModule.getLastReading();
+  auto last_reading = thermometer.getLastTemperatureReading();
   if (isCooling && last_reading <= targetTemp)
   {
     // Already cool enough

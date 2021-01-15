@@ -12,10 +12,11 @@
 #include "const.h"
 #include "led.h"
 #include "viper.h"
-#include "sensors.h"
+#include "sensors/thermometer.h"
+#include "sensors/engine.h"
+#include "data_publisher.h"
 #include "ntp_sync.h"
 #include "thermostat.h"
-#include "engine.h"
 
 // SerialLogHandler logHandler;
 PapertrailLogHandler papertailHandler(
@@ -30,10 +31,11 @@ PapertrailLogHandler papertailHandler(
 #endif
 
 EngineSensor engine;
+Thermometer thermometer;
 ViperModule viper(engine);
-SensorModule sensors(engine);
 NetworkTimeSyncModule ntp;
-ThermostatModule thermostat(sensors, viper, engine);
+ThermostatModule thermostat(thermometer, viper, engine);
+DataPublisher data_publisher(engine, thermometer);
 
 void setup()
 {
@@ -44,8 +46,9 @@ void setup()
 
   Log.info("Starting SmartVan");
 
+  thermometer.setup();
   viper.setup();
-  sensors.setup();
+  data_publisher.setup();
   ntp.setup();
   thermostat.setup();
 
