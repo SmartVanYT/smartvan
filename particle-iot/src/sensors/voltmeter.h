@@ -21,7 +21,9 @@ public:
     float dividerRatio = 1.0 * VOLTMETER_R_BOTTOM / (VOLTMETER_R_TOP + VOLTMETER_R_BOTTOM);
     float actualVoltage = measuredVoltage / dividerRatio;
 
-    return (abs(actualVoltage) < VOLTMETER_MAX_BOUND) ? actualVoltage : NAN;
+    // Log.info("ADC %d %.2f %.2f", adcValue, measuredVoltage, actualVoltage);
+
+    return (actualVoltage < VOLTMETER_MAX_BOUND && actualVoltage > VOLTMETER_MIN_BOUND) ? actualVoltage : NAN;
   }
 
   float readVoltageSmoothed()

@@ -19,7 +19,6 @@
 #include "ntp_sync.h"
 #include "thermostat.h"
 
-// SerialLogHandler logHandler;
 PapertrailLogHandler papertailHandler(
     PAPERTRAIL_HOST, PAPERTRAIL_PORT, PAPERTRAIL_APP, System.deviceID(),
     LOG_LEVEL_WARN, // By default particle has noisy logs from comm
