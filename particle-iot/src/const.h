@@ -19,4 +19,6 @@
 #define VOLTMETER_MAX_BOUND 50
 #define VOLTMETER_MIN_BOUND 0.2 // When unplugged
 
+#define LED_OVERRIDE_SYSTEM false
+
 #include "const_auth.h"

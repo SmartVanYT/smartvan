@@ -12,16 +12,14 @@ static void staticTakeControl()
   instance.takeControl();
 }
 
-// static void staticReleaseControl()
-// {
-//   instance.releaseControl();
-// }
-
 void SVLEDHardware::takeControl()
 {
-  RGB.control(true);
-  RGB.brightness(backgroundBrightness);
-  RGB.color(backgroundColor);
+  if (LED_OVERRIDE_SYSTEM)
+  {
+    RGB.control(true);
+    RGB.brightness(backgroundBrightness);
+    RGB.color(backgroundColor);
+  }
 }
 
 void SVLEDHardware::releaseControl()
