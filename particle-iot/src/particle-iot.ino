@@ -18,6 +18,7 @@
 #include "data_publisher.h"
 #include "ntp_sync.h"
 #include "thermostat.h"
+#include "watchdog.h"
 
 PapertrailLogHandler papertailHandler(
     PAPERTRAIL_HOST, PAPERTRAIL_PORT, PAPERTRAIL_APP, System.deviceID(),
@@ -35,6 +36,7 @@ Thermometer thermometer;
 Voltmeter voltmeter;
 ViperModule viper(engine);
 NetworkTimeSyncModule ntp;
+WatchdogModule watchdog;
 ThermostatModule thermostat(thermometer, viper, engine);
 DataPublisher data_publisher(engine, thermometer, voltmeter);
 
@@ -47,6 +49,7 @@ void setup()
 
   Log.info("Starting SmartVan");
 
+  watchdog.setup();
   thermometer.setup();
   voltmeter.setup();
   viper.setup();
