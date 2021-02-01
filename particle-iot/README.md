@@ -6,6 +6,18 @@ The main brains behind SmartVan.
 - Constants are in const.h
 - Sensitive auth info is in const_auth.h, you will need to create this file for compilation to work, then define some constants.
 
+## Particle Integrations
+
+In order to work you'll need some integrations:
+
+1. In your particle integrations, 'gcp' should publish to a Google Cloud pubsub queue
+2. Another particle integration, if you want to use pushover for push notifications, 'pushover' should point to your pushover webhook
+3. For cloud logging set up an account on Papertrail
+
+## Siri Shortcuts
+
+See the YouTube channel for info on how to set up siri shortcuts.
+
 # Particle Readme follows
 
 Every new Particle project is composed of 3 important elements that you'll see have been created in your project directory for particle-iot.

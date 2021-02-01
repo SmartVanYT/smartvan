@@ -1,13 +1,14 @@
 # OBD2 Sniffer
 
-For reverse engineering the data format of the RAM Promaster City CAN Bus.
+For reverse engineering the data format of the RAM Promaster City CAN Bus. You'll need the Carloop hardware.
 
 Following the guide at: https://www.carloop.io/apps/app-socketcan/
 
 # Codes
 
 These are what I have found to be true with my vehicle, you should verify
-any information on this page with your own vehicle.
+any information on this page with your own vehicle. Codes may be different
+by vehicle model or year, I could have misread or misinterpreted info, etc.
 
 ## Brakes
 
@@ -112,3 +113,9 @@ Other doors did not seem to trigger any CAN messages
 
 1E6 first 5 bytes look like a rotary encoder, advances forward in D or backward in R. Seems to be independent of engine since it still works when wheels turn in N
 1E6 byte 6 might be 'in motion', turns to F0 when going fwd or back and 0 in neutral and braking
+
+# Disclaimer of Warranties
+
+The information is provided "as is," with no assurance or guarantee of completeness, accuracy or timeliness of the information,
+and without warranty of any kind, express or implied, including but not limited to warranties of performance, merchantability
+and fitness for a particular purpose.
