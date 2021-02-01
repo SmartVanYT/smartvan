@@ -1,4 +1,10 @@
-.vscode
 .DS_Store
+
+# VS Code
+.vscode
 *.code-workspace
 .history/
+
+# Particle
+*/target
+*/photon_firmware*

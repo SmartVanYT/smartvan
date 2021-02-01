@@ -58,6 +58,7 @@ void setup()
   thermostat.setup();
 
   SVLED.signalSetupComplete();
+  Particle.publish("pushover", "SmartVan initialized", PRIVATE);
 }
 
 void loop()

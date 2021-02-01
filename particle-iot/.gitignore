@@ -1,2 +1,1 @@
-target
-photon_firmware*.bin
+src/particle-iot.cpp
